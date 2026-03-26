@@ -8,3 +8,13 @@ exports.listarPizzas = (req, res) => {
     res.status(200).json(menuPizzas)
 }
 
+exports.adicionarPizzas = (req, res) => {
+    const novaPizza = req.body
+
+    if (!novaPizza.nome || !novaPizza.preco) {
+        return res.status(400).json({ mensagem: "Nome e Preço são obrigatórios!" })
+    }
+
+    menuPizzas.push(novaPizza)
+    res.status(201).json({ mensagem: "Pizza cadastrada com sucesso!", pizza: novaPizza })
+}
