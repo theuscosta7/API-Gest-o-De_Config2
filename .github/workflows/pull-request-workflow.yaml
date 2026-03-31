@@ -1,0 +1,31 @@
+name: Pull Request Workflow
+
+on:
+  pull_request:
+    branches: [ main ]
+    types: [ opened, synchronize, reopened ]
+
+jobs:
+  pull-request-workflow:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Clonar repositório
+      uses: actions/checkout@v4
+    
+    - name: Instalação do Node 22
+      uses: actions/setup-node@v3
+      with:
+        node-version: '22'
+        cache: 'npm'
+
+    - name: Instalando dependências
+      run: npm install
+
+    - name: Checar conflitos para merge
+      run: |
+        git fetch origin main
+        if ! git merge-base --is-ancestor origin/main HEAD; then
+          echo "Branch is behind main. Please rebase or merge"
+          exit 1
+        fi
