@@ -21,4 +21,5 @@ jobs:
       run: npm install
 
     - name: Executar projeto
+      run:  node app.js &
 
