@@ -6,26 +6,56 @@ on:
     types: [ opened, synchronize, reopened ]
 
 jobs:
-  pull-request-workflow:
+
+  lint:
+    name: Verificação de estilo (Lint)
     runs-on: ubuntu-latest
 
     steps:
     - name: Clonar repositório
       uses: actions/checkout@v4
-    
-    - name: Instalação do Node 22
+      with:
+        fetch-depth: 0
+
+    - name: Instalar Node
       uses: actions/setup-node@v3
       with:
-        node-version: '22'
+        node-version: 22
         cache: 'npm'
 
-    - name: Instalando dependências
+    - name: Instalar dependências
       run: npm install
 
-    - name: Checar conflitos para merge
+    - name: Rodar ESLint
+      run: npx eslint . || true
+
+
+  test:
+    name: Testes e cobertura
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Clonar repositório
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Instalar Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: 22
+        cache: 'npm'
+
+    - name: Instalar dependências
+      run: npm install
+
+    - name: Verificar se branch está atualizada com main
       run: |
         git fetch origin main
         if ! git merge-base --is-ancestor origin/main HEAD; then
-          echo "Branch is behind main. Please rebase or merge"
+          echo "Branch desatualizada com a main. Faça rebase ou merge."
           exit 1
         fi
+
+    - name: Rodar testes com cobertura
+      run: npm run test:ci
