@@ -18,3 +18,17 @@ exports.adicionarPizzas = (req, res) => {
     menuPizzas.push(novaPizza)
     res.status(201).json({ mensagem: "Pizza cadastrada com sucesso!", pizza: novaPizza })
 }
+
+exports.removerPizza = (req, res) => {
+    const idParam = parseInt(req.params.id);
+
+    const index = menuPizzas.findIndex(pizza => pizza.id === idParam);
+
+    if (index === -1) {
+        return res.status(404).json({ mensagem: "Pizza não encontrada!" });
+    }
+
+    menuPizzas.splice(index, 1);
+
+    res.status(204).send();
+};
