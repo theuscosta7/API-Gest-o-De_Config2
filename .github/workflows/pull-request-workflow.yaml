@@ -52,7 +52,9 @@ jobs:
     - name: Verificar se branch está atualizada com main
       run: |
         git fetch origin main
-        if ! git merge-base --is-ancestor origin/main HEAD; then
+        git fetch origin ${{ github.head_ref }}
+
+        if ! git merge-base --is-ancestor origin/main origin/${{ github.head_ref }}; then
           echo "Branch desatualizada com a main. Faça rebase ou merge."
           exit 1
         fi
