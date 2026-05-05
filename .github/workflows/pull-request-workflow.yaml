@@ -27,7 +27,7 @@ jobs:
       run: npm install
 
     - name: Rodar ESLint
-      run: npx eslint . || true
+      run: npx eslint .
 
 
   test:
@@ -60,4 +60,4 @@ jobs:
         fi
 
     - name: Rodar testes com cobertura
-      run: npm run test:ci
+      run: npm test
