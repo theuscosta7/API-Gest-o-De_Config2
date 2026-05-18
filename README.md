@@ -25,4 +25,4 @@ Adiciona uma nova pizza ao cardápio
 <br>
 
 <h1> Qual workflow usado? </h1>
-Foi utilizado o workflow <strong> GitHub Flow </strong> por se tratar de um projeto menor contendo uma estruturação simples, onde é possível ele age de maneira mais rápida e organizada.
+Foi utilizado o workflow <strong> GitHub Flow </strong> por se tratar de um projeto menor contendo uma estruturação simples, onde é possível ele age de maneira mais rápida e organizadaa.

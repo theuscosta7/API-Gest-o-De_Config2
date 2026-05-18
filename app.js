@@ -9,4 +9,3 @@ app.use(express.json())
 app.use('/', menuRouter)
 
 module.exports = app
-
