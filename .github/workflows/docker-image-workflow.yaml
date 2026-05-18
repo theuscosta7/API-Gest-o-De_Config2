@@ -36,7 +36,7 @@ jobs:
       - uses: actions/checkout@v4
       
       - name: Build da imagem
-        run: docker build -t theussc7/menu-pizzas:latest .
+        run: docker build -t theussc7/docker-image:latest .
 
   push-image:
     name: Publicar no DockerHub
@@ -54,8 +54,8 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build da imagem
-        run: docker build -t theussc7/menu-pizzas:latest .
+        run: docker build -t theussc7/docker-image:latest .
 
       - name: Push da imagem
-        run: docker push theussc7/menu-pizzas:latest
+        run: docker push theussc7/docker-image:latest
 
