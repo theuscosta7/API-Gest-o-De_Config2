@@ -1,0 +1,61 @@
+name: Docker Image Workflow
+
+on:
+  pull_request:
+    branches: [ main ]
+    types: [ opened, synchronize, reopened ]
+
+  push:
+    branches:
+      - main
+      - '**'
+
+jobs:
+
+  test: 
+    name: Rodar testes
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - run: npm ci
+      - run: npm test
+  
+  build-image:
+    name: build da imagem docker
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Build da imagem
+        run: docker build -t theussc7/menu-pizzas:latest .
+
+  push-image:
+    name: Publicar no DockerHub
+    runs-on: ubuntu-latest
+    needs: build-image
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login no DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build da imagem
+        run: docker build -t theussc7/menu-pizzas:latest .
+
+      - name: Push da imagem
+        run: docker push theussc7/menu-pizzas:latest
+
