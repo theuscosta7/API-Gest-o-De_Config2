@@ -26,3 +26,11 @@ Adiciona uma nova pizza ao cardápio
 
 <h1> Qual workflow usado? </h1>
 Foi utilizado o workflow <strong> GitHub Flow </strong> por se tratar de um projeto menor contendo uma estruturação simples, onde é possível ele age de maneira mais rápida e organizada.
+
+<br>
+
+---
+
+## 🐳 Imagem Docker
+
+[![DockerHub](https://img.shields.io/badge/DOCKERHUB-REPOSITÓRIO-blue?style=for-the-badge&logo=docker&logoColor=white)](https://hub.docker.com/repository/docker/theussc7/docker-image/general)
