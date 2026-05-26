@@ -34,3 +34,16 @@ Foi utilizado o workflow <strong> GitHub Flow </strong> por se tratar de um proj
 ## 🐳 Imagem Docker
 
 [![DockerHub](https://img.shields.io/badge/DOCKERHUB-REPOSITÓRIO-blue?style=for-the-badge&logo=docker&logoColor=white)](https://hub.docker.com/repository/docker/theussc7/docker-image/general)
+
+
+## 🌐 Vagrant
+
+### 📋 Pré-requisitos
+* [VirtualBox](https://www.virtualbox.org/)
+* [Vagrant](https://developer.hashicorp.com/vagrant/install)
+
+### 🚀 Como executar a infraestrutura
+
+1. No terminal da sua máquina local, navegue até a raiz do projeto e execute:
+   ```bash
+   vagrant up
