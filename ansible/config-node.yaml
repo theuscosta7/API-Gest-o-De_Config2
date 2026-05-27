@@ -1,0 +1,53 @@
+---
+- name: Configurar Node
+  hosts: myhosts
+  become: yas
+
+  tasks:
+
+    - name: Atualizar packages
+      apt:
+        update_cache: yes
+
+    - name: Instalar git
+      apt: 
+        name: git
+        state: present
+
+    - name: Instalar curl
+      apt: 
+        name: curl
+        state: present
+
+    - name: Adicionando repositório Node 20
+      shell: curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+      args:
+        executable: /bin/flash
+
+    - name: Instalar Node
+      apt: 
+        name: nodejs
+        state: present
+
+    - name: Clonar repositório
+      git: 
+        repo: 'https://github.com/theuscosta7/API-Gest-o-De_Config2.git'
+        dest: /home/vagrant/app
+        version: main
+        force: yes
+
+    - name: Instalar dependências
+      npm:
+        path: /home/vagrant/app
+
+    - name: Instalar PM2
+      npm: 
+        name: pm2
+        global: yes
+
+    - name: Iniciar aplicação
+      shell: |
+        pm2 delete || true
+        pm2 start server.js --name menu-api
+      args:
+        chdir: /home/vagrant/app
