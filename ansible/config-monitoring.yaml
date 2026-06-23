@@ -1,0 +1,51 @@
+- name: Configuração do Monitoramento
+  hosts: all
+  become: true
+  tasks:
+
+    - name: Garantir que dependências e stress-ng serão instalados
+      apt:
+        name: 
+          - curl
+          - stress-ng
+          - sendmail
+        state: present
+        update_cache: yes
+
+    - name: Instalar Netdata
+      shell: |
+        curl https://get.netdata.cloud/kickstart.sh -sSF | sh -s -- --non-interactive
+      args:
+        creates: /usr/sbin/netdata
+
+    - name:
+      copy: 
+        dest: /etc/netdata/health.d/cpu_alert.conf
+        content: |
+          alarm: custom.cpu.stage
+              on: system.cpu
+          lookup: average -10s of user,system,softirq,irq,steal
+          every: 10s
+           warn: $this > 80
+           crit: $this > 95
+          delay: down 1m
+           info: Alerta: O uso de CPU excedeu o limite seguro de 80%
+           to: sysadmin
+        owner: netdata
+        group: netdata
+        mode: '0644'
+
+    - name: Habilitar envio de email no health_alarm_notify.conf
+      lineinfile:
+        path: /etc/netdata/health_alarm_notify.config
+        regexp: '^{{ item.key }}='
+        line: '{{ item.key }}="{{ item.value }}"'
+      loop:
+       - { key: 'SEND_EMAIL', value: 'YES' }
+       - { key: 'DEFAULT_RECIPIENT_EMAIL', value: 'mateuscost122@gmail.com' }
+
+    - name: Reiniciar o serviço do netdata para aplicar as configurações
+      services:
+        name: netdata
+        state: restarted
+
